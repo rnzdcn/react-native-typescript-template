@@ -1,18 +1,26 @@
 import { PaperProvider } from 'react-native-paper'
-import { ReactNode } from 'react'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
-import MyComponent from '../components/bottom-navigation'
+import { QueryClient, QueryClientProvider } from 'react-query'
+import { StatusBar } from 'expo-status-bar'
+import { NavigationContainer } from '@react-navigation/native'
+import RootNavigator from '../navigation'
 
-export default function Providers({ children }: { children: ReactNode }) {
+const queryClient = new QueryClient()
+
+export default function Providers() {
   return (
-    <PaperProvider>
-      <SafeAreaProvider>
-        <SafeAreaView className={'flex-1'}>
-          {children}
+    <SafeAreaProvider>
+      <SafeAreaView className={'flex-1'}>
+        <QueryClientProvider client={queryClient}>
+          <PaperProvider>
+            <NavigationContainer>
+              <RootNavigator/>
+            </NavigationContainer>
 
-          <MyComponent />
-        </SafeAreaView>
-      </SafeAreaProvider>
-    </PaperProvider>
+            <StatusBar style="auto" />
+          </PaperProvider>
+        </QueryClientProvider>
+      </SafeAreaView>
+    </SafeAreaProvider>
   )
 }
